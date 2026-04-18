@@ -250,6 +250,12 @@
                         <h4 class="font-semibold text-lg mb-2 text-center">Entenda na prática!</h4>
                         <button id="btn-gemini-termo" class="w-full mb-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">✨ Me dê exemplos do dia a dia</button>
                         <div id="gemini-res-termo" class="gemini-response p-4 rounded-md text-sm"></div>
+                        <div id="doubt-section-termo" class="doubt-section mt-4">
+                            <h4 class="font-semibold text-lg mb-2">Ficou com alguma dúvida sobre os exemplos acima?</h4>
+                            <textarea id="doubt-input-termo" class="w-full p-2 border rounded-md" rows="3" placeholder="Digite aqui sua pergunta sobre os exemplos ou a explicação..."></textarea>
+                            <button id="btn-doubt-termo" class="w-full mt-2 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Tirar Dúvida</button>
+                            <div id="gemini-res-doubt-termo" class="gemini-response p-4 mt-4 rounded-md text-sm"></div>
+                        </div>
                     </div>
                 </article>
 
@@ -274,6 +280,12 @@
                         <h4 class="font-semibold text-lg mb-2 text-center">Peça ajuda ao mestre!</h4>
                         <button id="btn-gemini-hess" class="w-full mb-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">✨ IA, me explique a estratégia para resolver Lei de Hess</button>
                         <div id="gemini-res-hess" class="gemini-response p-4 rounded-md text-sm"></div>
+                        <div id="doubt-section-hess" class="doubt-section mt-4">
+                            <h4 class="font-semibold text-lg mb-2">Ficou com alguma dúvida sobre a resolução acima?</h4>
+                            <textarea id="doubt-input-hess" class="w-full p-2 border rounded-md" rows="3" placeholder="Digite aqui sua pergunta sobre a Lei de Hess..."></textarea>
+                            <button id="btn-doubt-hess" class="w-full mt-2 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Tirar Dúvida</button>
+                            <div id="gemini-res-doubt-hess" class="gemini-response p-4 mt-4 rounded-md text-sm"></div>
+                        </div>
                     </div>
                 </article>
             </section>
@@ -295,6 +307,12 @@
                         <h4 class="font-semibold text-lg mb-2 text-center">Teste seus conhecimentos!</h4>
                         <button id="btn-gemini-cadeia" class="w-full mb-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">✨ IA, me dê uma cadeia para classificar (com resposta)</button>
                         <div id="gemini-res-cadeia" class="gemini-response p-4 rounded-md text-sm"></div>
+                        <div id="doubt-section-cadeia" class="doubt-section mt-4">
+                            <h4 class="font-semibold text-lg mb-2">Ficou com alguma dúvida sobre a cadeia acima?</h4>
+                            <textarea id="doubt-input-cadeia" class="w-full p-2 border rounded-md" rows="3" placeholder="Digite aqui sua pergunta sobre a classificação..."></textarea>
+                            <button id="btn-doubt-cadeia" class="w-full mt-2 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Tirar Dúvida</button>
+                            <div id="gemini-res-doubt-cadeia" class="gemini-response p-4 mt-4 rounded-md text-sm"></div>
+                        </div>
                     </div>
                 </article>
 
@@ -327,6 +345,12 @@
                         <h4 class="font-semibold text-lg mb-2 text-center">Para que serve?</h4>
                         <button id="btn-gemini-alcano" class="w-full mb-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">✨ IA, me diga os usos do alcano selecionado</button>
                         <div id="gemini-res-alcano" class="gemini-response p-4 rounded-md text-sm"></div>
+                        <div id="doubt-section-alcano" class="doubt-section mt-4">
+                            <h4 class="font-semibold text-lg mb-2">Ficou com alguma dúvida sobre o alcano acima?</h4>
+                            <textarea id="doubt-input-alcano" class="w-full p-2 border rounded-md" rows="3" placeholder="Digite aqui sua pergunta sobre os usos ou a fórmula..."></textarea>
+                            <button id="btn-doubt-alcano" class="w-full mt-2 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Tirar Dúvida</button>
+                            <div id="gemini-res-doubt-alcano" class="gemini-response p-4 mt-4 rounded-md text-sm"></div>
+                        </div>
                     </div>
                 </article>
             </section>
@@ -532,30 +556,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-endotermica').addEventListener('click', () => createOrUpdateChart('Reação Endotérmica', 50, 150));
     
 
-    document.getElementById('btn-gemini-termo').addEventListener('click', async () => {
-        const resEl = document.getElementById('gemini-res-termo');
-        showLoader(resEl);
-        const prompt = `Dê 3 exemplos práticos e fáceis de entender de reações do tipo '${currentThermoType}' que acontecem no dia a dia. Explique brevemente cada um.`;
-        const response = await callGemini(prompt);
-        resEl.innerHTML = String(response).replace(/\n/g, '<br>');
-    });
+    setupDoubtSection(
+        'btn-gemini-termo', 'gemini-res-termo', 'doubt-section-termo', 'doubt-input-termo', 'btn-doubt-termo', 'gemini-res-doubt-termo',
+        () => `Dê 3 exemplos práticos e fáceis de entender de reações do tipo '${currentThermoType}' que acontecem no dia a dia. Responda de forma limpa, bonita e organizada. Use blocos curtos, com os nomes dos exemplos e uma explicação rápida para cada um.`
+    );
 
-    document.getElementById('btn-gemini-hess').addEventListener('click', async () => {
-        const resEl = document.getElementById('gemini-res-hess');
-        showLoader(resEl);
-        const prompt = "Explique em português, como se fosse para um iniciante, a estratégia passo a passo para resolver um problema de Lei de Hess. Dê dicas sobre o que procurar na reação alvo e como manipular as equações de base.";
-        const response = await callGemini(prompt);
-        resEl.innerHTML = String(response).replace(/\n/g, '<br>');
-    });
+    setupDoubtSection(
+        'btn-gemini-hess', 'gemini-res-hess', 'doubt-section-hess', 'doubt-input-hess', 'btn-doubt-hess', 'gemini-res-doubt-hess',
+        () => "Explique em português, como se fosse para um iniciante, a estratégia passo a passo para resolver um problema de Lei de Hess. Dê dicas sobre o que procurar na reação alvo e como manipular as equações de base. Responda de forma organizada, com Passos e Dicas separadas."
+    );
 
     // --- QUÍMICA 3: ORGÂNICA ---
-    document.getElementById('btn-gemini-cadeia').addEventListener('click', async () => {
-        const resEl = document.getElementById('gemini-res-cadeia');
-        showLoader(resEl);
-        const prompt = "Gere uma estrutura de uma cadeia carbônica para eu classificar. Apresente a estrutura em formato de texto (ex: CH3-CH(CH3)-CH=CH2). Depois, forneça a classificação completa (aberta/fechada, normal/ramificada, saturada/insaturada, homogênea/heterogênea) e explique o porquê de cada classificação.";
-        const response = await callGemini(prompt);
-        resEl.innerHTML = String(response).replace(/\n/g, '<br>');
-    });
+    setupDoubtSection(
+        'btn-gemini-cadeia', 'gemini-res-cadeia', 'doubt-section-cadeia', 'doubt-input-cadeia', 'btn-doubt-cadeia', 'gemini-res-doubt-cadeia',
+        () => "Gere uma estrutura de uma cadeia carbônica para eu classificar. Apresente a estrutura em formato de texto (ex: CH3-CH(CH3)-CH=CH2). Depois, forneça a classificação completa (aberta/fechada, normal/ramificada, saturada/insaturada, homogênea/heterogênea) e explique o porquê de cada classificação. Responda de forma limpa e organizada."
+    );
 
     const alcanoInput = document.getElementById('alcano-carbonos');
     const alcanoSliderValue = document.getElementById('alcano-slider-value');
@@ -577,15 +592,10 @@ document.addEventListener('DOMContentLoaded', () => {
     alcanoInput.addEventListener('input', updateAlcano);
     
 
-    document.getElementById('btn-gemini-alcano').addEventListener('click', async () => {
-        const n = parseInt(alcanoInput.value);
-        const name = alcanoNames[n];
-        const resEl = document.getElementById('gemini-res-alcano');
-        showLoader(resEl);
-        const prompt = `Explique de forma simples e direta para que serve o ${name}. Dê seus principais usos na indústria e no cotidiano.`;
-        const response = await callGemini(prompt);
-        resEl.innerHTML = String(response).replace(/\n/g, '<br>');
-    });
+    setupDoubtSection(
+        'btn-gemini-alcano', 'gemini-res-alcano', 'doubt-section-alcano', 'doubt-input-alcano', 'btn-doubt-alcano', 'gemini-res-doubt-alcano',
+        () => `Explique de forma simples e direta para que serve o ${alcanoNames[parseInt(alcanoInput.value)]}. Dê seus principais usos na indústria e no cotidiano. Responda de forma limpa, bonita e organizada.`
+    );
 
     // Initial calls on page load
     createOrUpdateChart('Reação Exotérmica', 100, 20);
